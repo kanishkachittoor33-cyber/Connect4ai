@@ -1,0 +1,12 @@
+# BAML Connect 4 Game Dependencies
+
+# Core BAML package
+baml-py==0.214.0
+
+# Environment variable management
+python-dotenv>=1.0.0
+
+# BAML client dependencies (auto-installed with baml-py, but listed for reference)
+pydantic>=2.0.0
+typing-extensions>=4.14.1
+
