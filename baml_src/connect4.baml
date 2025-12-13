@@ -15,7 +15,7 @@ class AIMove {
 
 // Function to get AI's strategic move in Connect 4
 function GetAIMove(gameState: GameState) -> AIMove {
-  client Gemini3ProOpenRouter
+  client AmazonNova2LiteOpenRouter
   prompt #"
     {{ _.role("user")}}
 
@@ -67,7 +67,7 @@ test empty_board {
     }
   }
 }
-test winning_move {
+test horizontal_win_right {
   functions [GetAIMove]
   args {
     gameState {
@@ -82,7 +82,77 @@ test winning_move {
       currentPlayer "a1"
     }
   }
+  @@assert( {{ this.column ==  6 }})
 }
+test horizontal_win_left {
+  functions [GetAIMove]
+  args {
+    gameState {
+      board [
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["  ", "  ", "  ", "p1", "p1", "a1", "  "],
+        ["  ", "  ", "  ", "a1", "a1", "a1", "p1"]
+      ]
+      currentPlayer "a1"
+    }
+  }
+  @@assert( {{ this.column ==  2 }})
+}
+test horizontal_win_vertical {
+  functions [GetAIMove]
+  args {
+    gameState {
+      board [
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["  ", "  ", "a1", "p1", "  ", "  ", "  "],
+        ["  ", "  ", "a1", "p1", "  ", "  ", "  "],
+        ["  ", "  ", "a1", "p1", "p1", "  ", "  "],
+        ["  ", "  ", "p1", "a1", "a1", "a1", "p1"]
+      ]
+      currentPlayer "p1"
+    }
+  }
+  @@assert( {{ this.column ==  3 }})
+}
+test diagonally_win_right {
+  functions [GetAIMove]
+  args {
+    gameState {
+      board [
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["  ", "  ", "  ", "  ", "p1", "a1", "  "],
+        ["  ", "  ", "  ", "p1", "p1", "p1", "  "],
+        ["  ", "  ", "p1", "a1", "a1", "a1", "p1"]
+      ]
+      currentPlayer "p1"
+    }
+  }
+  @@assert( {{ this.column ==  5 }})
+}
+test diagonally_win_left {
+  functions [GetAIMove]
+  args {
+    gameState {
+      board [
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["a1", "a1", "  ", "  ", "  ", "  ", "  "],
+        ["p1", "p1", "a1", "p1", "p1", "  ", "  "],
+        ["a1", "p1", "p1", "a1", "a1", "a1", "p1"]
+      ]
+      currentPlayer "a1"
+    }
+  }
+  @@assert( {{ this.column ==  0}})
+}
+
 test blocking_move {
   functions [GetAIMove]
   args {
@@ -98,4 +168,6 @@ test blocking_move {
       currentPlayer "p1"
     }
   }
+  @@assert( {{ this.column ==  6 }})
 }
+
