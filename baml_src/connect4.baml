@@ -15,7 +15,7 @@ class AIMove {
 
 // Function to get AI's strategic move in Connect 4
 function GetAIMove(gameState: GameState) -> AIMove {
-  client AmazonNova2LiteOpenRouter
+  client Gemini3ProOpenRouter
   prompt #"
     {{ _.role("user")}}
 
