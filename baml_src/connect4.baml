@@ -15,7 +15,7 @@ class AIMove {
 
 // Function to get AI's strategic move in Connect 4
 function GetAIMove(gameState: GameState) -> AIMove {
-  client AmazonNova2LiteOpenRouter
+  client Gemini3ProOpenRouter
   prompt #"
     {{ _.role("user")}}
 
@@ -108,12 +108,12 @@ test horizontal_win_vertical {
       board [
         ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
         ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
-        ["  ", "  ", "a1", "p1", "  ", "  ", "  "],
-        ["  ", "  ", "a1", "p1", "  ", "  ", "  "],
-        ["  ", "  ", "a1", "p1", "p1", "  ", "  "],
-        ["  ", "  ", "p1", "a1", "a1", "a1", "p1"]
+        ["  ", "  ", "p1", "a1", "  ", "  ", "  "],
+        ["  ", "  ", "p1", "a1", "  ", "  ", "  "],
+        ["  ", "  ", "p1", "a1", "a1", "  ", "  "],
+        ["  ", "  ", "a1", "p1", "p1", "p1", "a1"]
       ]
-      currentPlayer "p1"
+      currentPlayer "a1"
     }
   }
   @@assert( {{ this.column ==  3 }})
@@ -126,11 +126,11 @@ test diagonally_win_right {
         ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
         ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
         ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
-        ["  ", "  ", "  ", "  ", "p1", "a1", "  "],
-        ["  ", "  ", "  ", "p1", "p1", "p1", "  "],
-        ["  ", "  ", "p1", "a1", "a1", "a1", "p1"]
+        ["  ", "  ", "  ", "  ", "a1", "p1", "  "],
+        ["  ", "  ", "  ", "a1", "a1", "a1", "  "],
+        ["  ", "  ", "a1", "p1", "p1", "p1", "a1"]
       ]
-      currentPlayer "p1"
+      currentPlayer "a1"
     }
   }
   @@assert( {{ this.column ==  5 }})
@@ -152,7 +152,23 @@ test diagonally_win_left {
   }
   @@assert( {{ this.column ==  0}})
 }
-
+test win_in_2 {
+  functions [GetAIMove]
+  args {
+    gameState {
+      board [
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["  ", "  ", "p1", "  ", "  ", "  ", "  "],
+        ["  ", "  ", "a1", "a1", "a1", "  ", "  "],
+        ["  ", "  ", "a1", "a1", "p1", "  ", "  "],
+        ["  ", "  ", "a1", "p1", "a1", "p1", "a1"]
+      ]
+      currentPlayer "a1"
+    }
+  }
+  @@assert( {{ this.column ==  5}})
+}
 test blocking_move {
   functions [GetAIMove]
   args {
@@ -162,10 +178,10 @@ test blocking_move {
         ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
         ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
         ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
-        ["  ", "  ", "  ", "p1", "p1", "  ", "  "],
-        ["  ", "  ", "p1", "a1", "a1", "a1", "  "]
+        ["  ", "  ", "  ", "a1", "a1", "  ", "  "],
+        ["  ", "  ", "a1", "p1", "p1", "p1", "  "]
       ]
-      currentPlayer "p1"
+      currentPlayer "a1"
     }
   }
   @@assert( {{ this.column ==  6 }})
