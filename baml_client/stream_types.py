@@ -28,6 +28,7 @@ class StreamState(BaseModel, typing.Generic[StreamStateValueT]):
 
 class AIMove(BaseModel):
     column: typing.Optional[int] = None
+    talk: typing.Optional[str] = None
 
 class GameState(BaseModel):
     board: typing.List[typing.List[str]]

@@ -46,6 +46,7 @@ def all_succeeded(checks: typing.Dict[CheckName, Check]) -> bool:
 
 class AIMove(BaseModel):
     column: int
+    talk: str
 
 class GameState(BaseModel):
     board: typing.List[typing.List[str]]

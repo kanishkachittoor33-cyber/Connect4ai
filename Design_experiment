@@ -1,0 +1,34 @@
+Compare AI capabilities for connect 4 by seeing how the different models choose to move in certain situations.
+
+Variables: 
+1.Models 
+    gemini3pro
+    grok4.1 
+    amazonnova2lite
+    Gpt5
+    Gpt5mini
+    gemini2.5flash
+    gpt5.1
+    gemini2.5flashlite
+    gpt4
+    gpt4mini
+    gemma3
+    claudeopus4.1
+    claudesonic4.1
+    grok4
+    Compare fast models and reasoning models
+
+2.prompt
+3.experiment
+    model test-> 
+    win in 1-->horizontals, verticals, diagonals
+    win in 2-->force move
+    block-->horizontals, verticals, diagonals
+
+    measure-->
+    score
+    speed
+    token cost
+    number of tokens
+
+

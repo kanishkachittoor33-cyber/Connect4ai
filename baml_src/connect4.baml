@@ -11,11 +11,12 @@ class GameState {
 class AIMove {
   // Column number where AI should place its piece (0-6)
   column int @description("The column number where the AI should place its piece, must be between 0 and 6")
+  talk string @description("Smack talk to the player, dont always say the strategy, play mind games with the player")
 }
 
 // Function to get AI's strategic move in Connect 4
 function GetAIMove(gameState: GameState) -> AIMove {
-  client Gemini3ProOpenRouter
+  client DeepSeekv32OpenRouter
   prompt #"
     {{ _.role("user")}}
 

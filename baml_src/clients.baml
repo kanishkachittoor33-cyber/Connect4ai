@@ -1,6 +1,24 @@
 // Learn more about clients at https://docs.boundaryml.com/docs/snippets/clients/overview
 
 // Using the new OpenAI Responses API for enhanced formatting
+client<llm> DeepSeekv32OpenRouter{
+  provider "openai-generic"
+  options {
+    base_url "https://openrouter.ai/api/v1"
+    api_key env.OPENROUTER_API_KEY
+    model "deepseek/deepseek-v3.2"
+    
+  }
+}
+client<llm> DeepSeekv31OpenRouter{
+  provider "openai-generic"
+  options {
+    base_url "https://openrouter.ai/api/v1"
+    api_key env.OPENROUTER_API_KEY
+    model "nex-agi/deepseek-v3.1-nex-n1:free"
+    
+  }
+}
 client<llm> Gemini3ProOpenRouter{
   provider "openai-generic"
   options {
