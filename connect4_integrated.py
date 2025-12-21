@@ -121,7 +121,7 @@ def makeamove(gameboard, player):
                     if gameboard[0][playercolumnmove - 1] == ' ':
                         validmove = True
                         break
-            print("Invalid move! Please enter a number between 1-7 for an available column.")
+            #print("Invalid move! Please enter a number between 1-7 for an available column.")
         except KeyboardInterrupt:
             print("\n\nGame interrupted. Goodbye!")
             sys.exit(0)

@@ -1,12 +1,40 @@
 // Learn more about clients at https://docs.boundaryml.com/docs/snippets/clients/overview
 
 // Using the new OpenAI Responses API for enhanced formatting
-client<llm> DeepSeekv32OpenRouter{
+
+client<llm> Gpt35OpenRouter{
+  provider "openai-generic"
+  options {
+    base_url "https://openrouter.ai/api/v1"
+    api_key env.OPENROUTER_API_KEY
+    model "openai/gpt-3.5-turbo-16k"
+    
+  }
+}client<llm> DeepSeekv32OpenRouter{
   provider "openai-generic"
   options {
     base_url "https://openrouter.ai/api/v1"
     api_key env.OPENROUTER_API_KEY
     model "deepseek/deepseek-v3.2"
+    
+  }
+}
+client<llm> Gptossn41OpenRouter{
+  provider "openai-generic"
+  options {
+    base_url "https://openrouter.ai/api/v1"
+    api_key env.OPENROUTER_API_KEY
+    model "openai/gpt-oss-120b"
+    
+  }
+}
+
+client<llm> Gpt4oOpenRouter{
+  provider "openai-generic"
+  options {
+    base_url "https://openrouter.ai/api/v1"
+    api_key env.OPENROUTER_API_KEY
+    model "openai/gpt-4o"
     
   }
 }
@@ -148,24 +176,6 @@ client<llm> CustomHaiku {
 //     // No API key needed for local Ollama
 //   }
 // }
-
-// https://docs.boundaryml.com/docs/snippets/clients/round-robin
-client<llm> CustomFast {
-  provider round-robin
-  options {
-    // This will alternate between the two clients
-    strategy [CustomGPT5Mini, CustomHaiku]
-  }
-}
-
-// https://docs.boundaryml.com/docs/snippets/clients/fallback
-client<llm> OpenaiFallback {
-  provider fallback
-  options {
-    // This will try the clients in order until one succeeds
-    strategy [CustomGPT5Mini, CustomGPT5]
-  }
-}
 
 // https://docs.boundaryml.com/docs/snippets/clients/retry
 retry_policy Constant {

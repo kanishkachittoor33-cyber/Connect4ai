@@ -16,7 +16,7 @@ class AIMove {
 
 // Function to get AI's strategic move in Connect 4
 function GetAIMove(gameState: GameState) -> AIMove {
-  client DeepSeekv32OpenRouter
+  client Gpt35OpenRouter
   prompt #"
     {{ _.role("user")}}
 
@@ -170,6 +170,74 @@ test win_in_2 {
   }
   @@assert( {{ this.column ==  5}})
 }
+test win_in_2_fork_center_row {
+  functions [GetAIMove]
+  args {
+    gameState {
+      board [
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["a1", "  ", "p1", "  ", "p1", "  ", "a1"],
+        ["p1", "  ", "a1", "  ", "a1", "  ", "p1"],
+        ["a1", "  ", "p1", "  ", "p1", "  ", "a1"],
+        ["p1", "  ", "a1", "  ", "a1", "  ", "p1"]
+      ]
+      currentPlayer "a1"
+    }
+  }
+  @@assert( {{ this.column ==  3 }})
+}
+test win_in_2_fork_left_shift {
+  functions [GetAIMove]
+  args {
+    gameState {
+      board [
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["  ", "a1", "  ", "p1", "  ", "a1", "p1"],
+        ["  ", "p1", "  ", "a1", "  ", "p1", "a1"],
+        ["  ", "a1", "  ", "p1", "  ", "a1", "p1"],
+        ["  ", "a1", "  ", "a1", "  ", "p1", "p1"]
+      ]
+      currentPlayer "a1"
+    }
+  }
+  @@assert( {{ this.column ==  2 }})
+}
+test win_in_2_fork_right_shift {
+  functions [GetAIMove]
+  args {
+    gameState {
+      board [
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["p1", "a1", "  ", "p1", "  ", "a1", "  "],
+        ["a1", "p1", "  ", "a1", "  ", "p1", "  "],
+        ["p1", "a1", "  ", "p1", "  ", "a1", "  "],
+        ["p1", "p1", "  ", "a1", "  ", "a1", "  "]
+      ]
+      currentPlayer "a1"
+    }
+  }
+  @@assert( {{ this.column ==  4 }})
+}
+test win_in_2_fork_near_edge {
+  functions [GetAIMove]
+  args {
+    gameState {
+      board [
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["p1", "  ", "p1", "  ", "a1", "  ", "a1"],
+        ["a1", "  ", "a1", "  ", "p1", "  ", "p1"],
+        ["p1", "  ", "p1", "  ", "a1", "  ", "a1"],
+        ["p1", "  ", "a1", "  ", "a1", "  ", "p1"]
+      ]
+      currentPlayer "a1"
+    }
+  }
+  @@assert( {{ this.column ==  3 }})
+}
 test blocking_move {
   functions [GetAIMove]
   args {
@@ -186,5 +254,192 @@ test blocking_move {
     }
   }
   @@assert( {{ this.column ==  6 }})
+}
+test block_vertical_win {
+  functions [GetAIMove]
+  args {
+    gameState {
+      board [
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["  ", "  ", "  ", "p1", "  ", "  ", "  "],
+        ["  ", "  ", "  ", "p1", "  ", "  ", "  "],
+        ["  ", "  ", "  ", "p1", "a1", "  ", "  "],
+        ["  ", "  ", "a1", "a1", "a1", "  ", "  "]
+      ]
+      currentPlayer "a1"
+    }
+  }
+  @@assert( {{ this.column ==  3 }})
+}
+test block_diagonal_up_right {
+  functions [GetAIMove]
+  args {
+    gameState {
+      board [
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["  ", "  ", "p1", "a1", "  ", "  ", "  "],
+        ["  ", "p1", "a1", "a1", "  ", "  ", "  "],
+        ["p1", "a1", "a1", "a1", "  ", "  ", "  "]
+      ]
+      currentPlayer "a1"
+    }
+  }
+  @@assert( {{ this.column ==  3 }})
+}
+test block_diagonal_down_right {
+  functions [GetAIMove]
+  args {
+    gameState {
+      board [
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["  ", "  ", "  ", "a1", "p1", "  ", "  "],
+        ["  ", "  ", "  ", "a1", "a1", "p1", "  "],
+        ["  ", "  ", "  ", "a1", "a1", "a1", "p1"]
+      ]
+      currentPlayer "a1"
+    }
+  }
+  @@assert( {{ this.column ==  3 }})
+}
+test block_horizontal_win_middle {
+  functions [GetAIMove]
+  args {
+    gameState {
+      board [
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["  ", "  ", "p1", "p1", "  ", "p1", "  "],
+        ["  ", "a1", "a1", "a1", "p1", "p1", "  "]
+      ]
+      currentPlayer "a1"
+    }
+  }
+  @@assert( {{ this.column ==  4 }})
+}
+test block_dangerous_vertical_threat {
+  functions [GetAIMove]
+  args {
+    gameState {
+      board [
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["  ", "  ", "  ", "p1", "  ", "  ", "  "],
+        ["  ", "  ", "  ", "p1", "  ", "  ", "  "],
+        ["  ", "  ", "a1", "a1", "a1", "  ", "  "]
+      ]
+      currentPlayer "a1"
+    }
+  }
+  @@assert( {{ this.column ==  3 }})
+}
+test block_dangerous_diagonal_threat {
+  functions [GetAIMove]
+  args {
+    gameState {
+      board [
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["a1", "p1", "  ", "  ", "  ", "  ", "  "],
+        ["a1", "a1", "p1", "  ", "  ", "  ", "  "],
+        ["a1", "a1", "a1", "p1", "  ", "  ", "  "]
+      ]
+      currentPlayer "a1"
+    }
+  }
+  @@assert( {{ this.column ==  0 }})
+}
+test block_horizontal_with_gap {
+  functions [GetAIMove]
+  args {
+    gameState {
+      board [
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["  ", "  ", "p1", "  ", "p1", "p1", "  "],
+        ["  ", "a1", "a1", "a1", "p1", "p1", "  "]
+      ]
+      currentPlayer "a1"
+    }
+  }
+  @@assert( {{ this.column ==  3 }})
+}
+test block_multiple_threats_priority {
+  functions [GetAIMove]
+  args {
+    gameState {
+      board [
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["  ", "  ", "  ", "  ", "  ", "  ", "p1"],
+        ["p1", "p1", "p1", "  ", "a1", "a1", "p1"]
+      ]
+      currentPlayer "a1"
+    }
+  }
+  @@assert( {{ this.column ==  3 }})
+}
+test block_dangerous_2_in_row_vertical {
+  functions [GetAIMove]
+  args {
+    gameState {
+      board [
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["  ", "  ", "  ", "p1", "  ", "  ", "  "],
+        ["  ", "  ", "  ", "p1", "a1", "a1", "a1"]
+      ]
+      currentPlayer "a1"
+    }
+  }
+  @@assert( {{ this.column ==  3 }})
+}
+test block_diagonal_bottom_left {
+  functions [GetAIMove]
+  args {
+    gameState {
+      board [
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["  ", "  ", "  ", "p1", "  ", "  ", "  "],
+        ["  ", "  ", "p1", "a1", "  ", "  ", "  "],
+        ["  ", "p1", "a1", "a1", "  ", "  ", "  "],
+        ["  ", "a1", "a1", "a1", "  ", "  ", "  "]
+      ]
+      currentPlayer "a1"
+    }
+  }
+  @@assert( {{ this.column ==  0 }})
+}
+test block_center_column_threat {
+  functions [GetAIMove]
+  args {
+    gameState {
+      board [
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["  ", "  ", "  ", "  ", "  ", "  ", "  "],
+        ["p1", "p1", "p1", "  ", "  ", "  ", "  "]
+      ]
+      currentPlayer "a1"
+    }
+  }
+  @@assert( {{ this.column ==  3 }})
 }
 
